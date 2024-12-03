@@ -1,0 +1,61 @@
+'''1 часть – написать программу в соответствии со своим вариантом задания.
+Написать 2 варианта формирования (алгоритмический и с помощью функций Питона), сравнив по времени их выполнение.
+2 часть – усложнить написанную программу, введя по своему усмотрению в условие минимум одно ограничение
+ на характеристики объектов (которое будет сокращать количество переборов)
+  и целевую функцию для нахождения оптимального решения
+Вариант 14. Вводятся К целых чисел. Составьте все возможные кортежи из этих чисел.
+'''
+
+import itertools
+
+
+def generate_tuples1(numbers, k):
+    return list(itertools.product(numbers, repeat=k))
+
+
+k1 = int(input('Введите количество чисел '))
+nums1 = []
+if k1 <= 0:
+    nums1 = [1, 2, 3]
+    k1 = 3
+else:
+    print('Введите числа')
+    n1 = [int(n) for n in input().split()]
+    for i in range(k1):
+        nums1.append(n1[i])
+print('Функция itertoools')
+answ1 = generate_tuples1(nums1, k1)
+for i in answ1:
+    print(i)
+
+print('Алгоритм')
+
+
+def generate_tuples2(numbers, k):
+    def helper(prefix, k):
+        if k == 0:
+            result.append(tuple(prefix))
+            return
+        for number in numbers:
+            prefix.append(number)
+            helper(prefix, k - 1)
+            prefix.pop()
+    result = []
+    helper([], k)
+    return result
+
+
+k2 = int(input('Введите количество чисел '))
+nums2 = []
+if k2 <= 0:
+    nums2 = [1, 2, 3]
+    k2 = 3
+else:
+    print('Введите числа')
+    n2 = [int(n) for n in input().split()]
+    for i in range(k2):
+        nums2.append(n2[i])
+
+answ2 = generate_tuples2(nums2, k2)
+for i in answ2:
+    print(i)
