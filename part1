@@ -8,54 +8,49 @@
 
 import itertools
 
-
-def generate_tuples1(numbers, k):
-    return list(itertools.product(numbers, repeat=k))
+import itertools
 
 
-k1 = int(input('Введите количество чисел '))
-nums1 = []
-if k1 <= 0:
-    nums1 = [1, 2, 3]
-    k1 = 3
-else:
-    print('Введите числа')
-    n1 = [int(n) for n in input().split()]
-    for i in range(k1):
-        nums1.append(n1[i])
-print('Функция itertoools')
-answ1 = generate_tuples1(nums1, k1)
-for i in answ1:
-    print(i)
-
-print('Алгоритм')
+# Использование библиотек
+def generate_tuples(elements, tuple_length):
+    return list(itertools.permutations(elements, tuple_length))
 
 
-def generate_tuples2(numbers, k):
-    def helper(prefix, k):
-        if k == 0:
-            result.append(tuple(prefix))
+k = int(input("Введите количество элементов: "))
+elements = []
+for i in range(k):
+    element = input(f"Введите элемент {i + 1}: ")
+    elements.append(element)
+tuple_length = k
+tuples = generate_tuples(elements, tuple_length)
+print("Библиотека")
+for tuple_item in tuples:
+    print(tuple_item)
+
+
+# Использование алгоритма
+
+def generate_tuples(elements, k):
+    def backtrack(path):
+        if len(path) == k:
+            result.append(tuple(path))
             return
-        for number in numbers:
-            prefix.append(number)
-            helper(prefix, k - 1)
-            prefix.pop()
+        for element in elements:
+            backtrack(path + [element])
     result = []
-    helper([], k)
+    backtrack([])
     return result
 
 
-k2 = int(input('Введите количество чисел '))
-nums2 = []
-if k2 <= 0:
-    nums2 = [1, 2, 3]
-    k2 = 3
-else:
-    print('Введите числа')
-    n2 = [int(n) for n in input().split()]
-    for i in range(k2):
-        nums2.append(n2[i])
+tuples = generate_tuples(elements, k)
 
-answ2 = generate_tuples2(nums2, k2)
-for i in answ2:
-    print(i)
+print("Всевозможные кортежи:")
+for t in tuples:
+    flag = False
+    for i in elements:
+        if t.count(i) > 1:
+            flag = True
+        if flag:
+            break
+    if not flag:
+        print(t)
