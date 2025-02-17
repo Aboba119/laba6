@@ -4,71 +4,55 @@
  на характеристики объектов (которое будет сокращать количество переборов)
   и целевую функцию для нахождения оптимального решения
 Вариант 14. Вводятся К целых чисел. Составьте все возможные кортежи из этих чисел.
+Вывести только те кортежи, в которых сумма первых двух элементов нечетная
 '''
 
 import itertools
 
-'''Вывести кортежи в которых четных чисел больше'''
+
+# Использование библиотек
+def generate_tuples(elements, tuple_length):
+    return list(itertools.permutations(elements, tuple_length))
 
 
-def is_valid_tuple(t):
-    even_count = sum(1 for x in t if x % 2 == 0)
-    odd_count = len(t) - even_count
-    return even_count > odd_count
+k = int(input("Введите количество элементов: "))
+elements = []
+for i in range(k):
+    element = input(f"Введите элемент {i + 1}: ")
+    elements.append(int(element))
+tuple_length = k
+tuples = generate_tuples(elements, tuple_length)
+print("Библиотека")
+for tuple_item in tuples:
+    if (tuple_item[0] + tuple_item[1]) % 2 == 1:
+        print(tuple_item)
 
 
-def generate_valid_tuples(numbers, k):
-    all_tuples = itertools.product(numbers, repeat=k)
-    valid_tuples = filter(is_valid_tuple, all_tuples)
-    return list(valid_tuples)
+# Использование алгоритма
 
-
-k1 = int(input('Введите количество чисел '))
-nums1 = []
-if k1 <= 0:
-    nums1 = [1, 2, 3]
-    k1 = 3
-else:
-    print('Введите числа')
-    n1 = [int(n) for n in input().split()]
-    for i in range(k1):
-        nums1.append(n1[i])
-print('Функция itertoools')
-answ1 = generate_valid_tuples(nums1, k1)
-for i in answ1:
-    print(i)
-
-
-
-
-def generate_valid_tuples2(numbers, k):
-    def helper(prefix, k):
-        if k == 0:
-            if sum(1 for x in prefix if x % 2 == 0) > sum(1 for x in prefix if x % 2 != 0):
-                result.append(tuple(prefix))
+def generate_tuples(elements, k):
+    def backtrack(path):
+        if len(path) == k:
+            result.append(tuple(path))
             return
-        for number in numbers:
-            prefix.append(number)
-            helper(prefix, k - 1)
-            prefix.pop()
+        for element in elements:
+            backtrack(path + [element])
 
     result = []
-    helper([], k)
+    backtrack([])
     return result
 
 
-print('Алгоритм')
-k2 = int(input('Введите количество чисел '))
-nums2 = []
-if k2 <= 0:
-    nums2 = [1, 2, 3]
-    k2 = 3
-else:
-    print('Введите числа')
-    n2 = [int(n) for n in input().split()]
-    for i in range(k2):
-        nums2.append(n2[i])
+tuples = generate_tuples(elements, k)
 
-answ2 = generate_valid_tuples2(nums2, k2)
-for i in answ2:
-    print(i)
+print("Алгоритм")
+for t in tuples:
+    flag = False
+    for i in elements:
+        if t.count(i) > 1:
+            flag = True
+        if flag:
+            break
+    if not flag:
+        if (t[0] + t[1]) % 2 == 1:
+            print(t)
